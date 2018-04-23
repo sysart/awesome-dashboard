@@ -4,6 +4,7 @@ import Event from "./components/Event";
 import EventList from "./components/EventList";
 import Background from "./components/Background";
 import LoginContainer from "./components/login/LoginContainer";
+import Title from "./components/Title";
 
 export default class App extends Component {
   RELOAD_TIME = 5 * 60 * 1000;
@@ -109,7 +110,7 @@ export default class App extends Component {
         )}
         {this.state.logged && (
           <EventList>
-            <h2>Eventit @Helsinki</h2>
+            <Title />
 
             {this.state.events.map(ev => <Event key={ev.id} event={ev} />)}
           </EventList>
