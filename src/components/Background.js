@@ -1,15 +1,18 @@
 import React from "react";
-import styled from "styled-components";
 
-const BackgroundImage = styled.img``;
+const videoID = "Z0FETzb32Hs";
 
 const Background = () => (
-  <BackgroundImage
-    src={`https://picsum.photos/1920/1080/?blur&random&t=${Date.now()}`}
+  <iframe
+    title="background video"
     style={{
-      width: "auto",
+      width: "100vw",
       height: "100vh"
     }}
+    src={`https://www.youtube.com/embed/${videoID}?version=3&autoplay=1&loop=1&rel=0&controls=0&showinfo=0&mute=1`}
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen
   />
 );
 

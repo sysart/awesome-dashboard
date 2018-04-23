@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 import Event from "./components/Event";
 import EventList from "./components/EventList";
@@ -46,25 +46,23 @@ export default class App extends Component {
     }, this.RELOAD_TIME);
   }
 
-  initClient = () => {
-    window.gapi.client
-      .init({
-        apiKey: this.API_KEY,
-        clientId: this.CLIENT_ID,
-        discoveryDocs: this.DISCOVERY_DOCS,
-        scope: this.SCOPES
-      })
-      .then(() => {
-        // Listen for sign-in state changes.
-        window.gapi.auth2
-          .getAuthInstance()
-          .isSignedIn.listen(this.updateSigninStatus);
+  initClient = async () => {
+    await window.gapi.client.init({
+      apiKey: this.API_KEY,
+      clientId: this.CLIENT_ID,
+      discoveryDocs: this.DISCOVERY_DOCS,
+      scope: this.SCOPES
+    });
 
-        // Handle the initial sign-in state.
-        this.updateSigninStatus(
-          window.gapi.auth2.getAuthInstance().isSignedIn.get()
-        );
-      });
+    // Listen for sign-in state changes.
+    window.gapi.auth2
+      .getAuthInstance()
+      .isSignedIn.listen(this.updateSigninStatus);
+
+    // Handle the initial sign-in state.
+    this.updateSigninStatus(
+      window.gapi.auth2.getAuthInstance().isSignedIn.get()
+    );
   };
 
   login = () => {
@@ -84,26 +82,24 @@ export default class App extends Component {
     }
   };
 
-  listUpcomingEvents = () => {
-    window.gapi.client.calendar.events
-      .list({
-        calendarId: process.env.REACT_APP_CALENDAR_ID,
-        timeMin: new Date().toISOString(),
-        showDeleted: false,
-        singleEvents: true,
-        maxResults: 10,
-        orderBy: "startTime"
-      })
-      .then(response => {
-        this.setState({
-          events: response.result.items
-        });
-      });
+  listUpcomingEvents = async () => {
+    const response = await window.gapi.client.calendar.events.list({
+      calendarId: process.env.REACT_APP_CALENDAR_ID,
+      timeMin: new Date().toISOString(),
+      showDeleted: false,
+      singleEvents: true,
+      maxResults: 10,
+      orderBy: "startTime"
+    });
+
+    this.setState({
+      events: response.result.items
+    });
   };
 
   render() {
     return (
-      <div>
+      <Fragment>
         <Background />
         {!this.state.logged && (
           <LoginContainer>
@@ -117,7 +113,7 @@ export default class App extends Component {
             {this.state.events.map(ev => <Event key={ev.id} event={ev} />)}
           </EventList>
         )}
-      </div>
+      </Fragment>
     );
   }
 }
