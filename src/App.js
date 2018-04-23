@@ -112,7 +112,7 @@ export default class App extends Component {
         )}
         {this.state.logged && (
           <EventList>
-            <h2>Events @Office</h2>
+            <h2>Eventit @Helsinki</h2>
 
             {this.state.events.map(ev => <Event key={ev.id} event={ev} />)}
           </EventList>
