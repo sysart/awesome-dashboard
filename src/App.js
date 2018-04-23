@@ -101,6 +101,7 @@ export default class App extends Component {
     return (
       <Fragment>
         <Background />
+
         {!this.state.logged && (
           <LoginContainer>
             <button onClick={this.login}> Login</button>
